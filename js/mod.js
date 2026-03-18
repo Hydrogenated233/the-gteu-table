@@ -1,18 +1,18 @@
 let modInfo = {
-	name: "The ??? Table",
-	nameI18N: "The ??? Table",// When you enabled the internationalizationMod, this is the name in the second language
-	id: "mymod2",
-	author: "nobody",
-	pointsName: "points",
+	name: "The GTEU Table",
+	nameI18N: "The GTEU Table",// When you enabled the internationalizationMod, this is the name in the second language
+	id: "gteu",
+	author: "环三氧杂四氢",
+	pointsName: "EU",
 	modFiles: ["layers.js", "tree.js"],
 
 	internationalizationMod: false,
 	// When enabled, it will ask the player to choose a language at the beginning of the game
-	changedDefaultLanguage: false,
+	changedDefaultLanguage: true,
 	// Changes the mod default language. false -> English, true -> Chinese
 
 	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 1,  // In hours
+	offlineLimit: 999,  // In hours
 }
 
 var colors = {
@@ -49,9 +49,8 @@ function changelog(){
 	return i18n(`
 		<br><br><br><h1>更新日志:</h1><br>(不存在<span style='color: red'><s>剧透警告</s></span>)<br><br>
 		<span style="font-size: 17px;">
-			<h3><s>你应该自己写这个</s></h3><br><br>
-			<h3>v3.0 - 史无前例的改动</h3><br>
-				- 开发了 The Modding Table, 这何尝不是一种TMT<br>
+			<h3>v0.0</h3><br>
+				- 钢和铝<br>
 			<br><br>
 		`, `
 		<br><br><br><h1>ChangeLog:</h1><br>(No<span style='color: red'><s> Spoiler Warning!</s></span>)<br><br>
@@ -86,6 +85,32 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	//==LV===
+	//基础蒸气轮机
+	gain=gain
+				.add(buyableEffect("s", 11))//基础
+				.mul(hasUpgrade("s", 11)?upgradeEffect("s", 11):1)//热机改良
+	//工业高炉-铝
+	gain=gain
+				.sub(
+					buyableEffect("s", 12)
+					.mul(hasUpgrade("a",11)?4:1)//超频
+				)
+				
+	//==MV==
+	//进阶蒸气轮机
+	gain=gain
+				.add(buyableEffect("a", 11))//基础
+	//泵-原油
+	gain=gain
+				.sub(
+					buyableEffect("a", 12)[2]
+				)
+	//进阶内燃机
+	if(player.fu.points.gt(0)){
+		gain=gain.
+				add(getBuyableAmount("fu", 11).mul(1280))
+	}
 	return gain
 }
 
@@ -103,7 +128,7 @@ var displayThings = [
 
 // You can write code here to easily display information in the top-left corner
 function displayThingsRes(){
-	return 'Points: '+format(player.points)+' | '
+	return 'EUs: '+format(player.points)+' | '
 }
 
 // Determines when the game "ends"
