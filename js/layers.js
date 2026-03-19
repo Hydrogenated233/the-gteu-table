@@ -4,7 +4,7 @@ function formatEU(x){
     let Vs=["LV","MV","HV","EV","IV","LuV","ZPM","UV","UHV","UEV","UIV","UMV","UXV","MAX"]
     return `${
             V.gte(14)?
-            format(x.div(new Decimal(4).pow(V).mul(32)))+"A MAX+"+format(V.sub(15),0):
+            format(x.div(new Decimal(4).pow(V).mul(32)))+"A MAX+"+format(V.sub(13),0):
             format(x.div(new Decimal(4).pow(V).mul(32)))+"A "+Vs[parseInt(format(V))]
         }`
 }
