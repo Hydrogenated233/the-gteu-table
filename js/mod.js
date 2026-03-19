@@ -11,7 +11,7 @@ let modInfo = {
 	changedDefaultLanguage: true,
 	// Changes the mod default language. false -> English, true -> Chinese
 
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
+	initialStartPoints: new Decimal (0), // Used for hard resets and new players
 	offlineLimit: 999,  // In hours
 }
 
@@ -41,7 +41,7 @@ function hiddenLeftTable(){
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
+	num: "0.1",
 	name: "Literally nothing",
 }
 
@@ -49,6 +49,10 @@ function changelog(){
 	return i18n(`
 		<br><br><br><h1>更新日志:</h1><br>(不存在<span style='color: red'><s>剧透警告</s></span>)<br><br>
 		<span style="font-size: 17px;">
+			<h3>v0.1</h3><br>
+				- 统计信息<br>
+				- 数值平衡<br>
+				- 重写被动<br>
 			<h3>v0.0</h3><br>
 				- 钢和铝<br>
 			<br><br>
@@ -84,7 +88,7 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(1)
+	let gain = new Decimal(32)
 	//==LV===
 	//基础蒸气轮机
 	gain=gain
@@ -111,11 +115,20 @@ function getPointGen() {
 		gain=gain.
 				add(getBuyableAmount("fu", 11).mul(1280))
 	}
+	//被动燃油
+	gain=player.fu.points.gt(0)
+	?gain
+		.sub(
+			hasUpgrade("a", 15)?upgradeEffect("a", 15).mul(128):0
+		)
+	:gain
 	return gain
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
+	maxPoints: new Decimal(0),
+	totalPoints: new Decimal(0),
 }}
 
 // Display extra information at the top of the page

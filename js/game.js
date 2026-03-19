@@ -338,7 +338,7 @@ function gameLoop(diff) {
 	}
 	addTime(diff)
 	player.points = player.points.add(tmp.pointGen.times(diff)).max(0)
-
+	player.totalPoints = player.totalPoints.add(tmp.pointGen.times(diff)).max(0)
 	for (let x = 0; x <= maxRow; x++){
 		for (item in TREE_LAYERS[x]) {
 			let layer = TREE_LAYERS[x][item]
@@ -425,6 +425,7 @@ var interval = setInterval(function() {
 	adjustPopupTime(trueDiff)
 	updateParticles(trueDiff)
 	ticking = false
+	customPreTcik(diff)
 }, 50)
 
 setInterval(function() {needCanvasUpdate = true}, 500)
