@@ -107,8 +107,17 @@ addLayer("1layer", {
     tooltip() { return false },
     layerShown() { return layerDisplayTotal(['1layer']) },// If any layer in the array is unlocked, it will returns true. Otherwise it will return false.
     tabFormat: [
-        ["display-text", function () { return getPointsDisplay() }]
-    ],
+        ["display-text", function () { return getPointsDisplay() }],
+        ["display-text", function () { return `
+            <div style="text-align: left;">
+                借助土高炉的力量,你练出了第一炉钢.蒸汽轮机的成功发明,标志着你的半只脚已经跨入了电力时代.
+                <br>因为你的大部分电力来源还是由蒸汽推动轮机产生的电力
+                <br>不过不必担心,在这个阶段结束之时,你就可以关停那用作烧开水的巨大锅炉,正式踏入电力时代的征途.
+            </div>
+            ` }],
+        ["display-text", function () { return `<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            你问我土高炉是什么?只是我还没写的蒸气时代而已()` }],
+    ]
 })
 
 addLayer("s", {
@@ -238,7 +247,17 @@ addLayer("2layer", {
     tooltip() { return false },
     layerShown() { return layerDisplayTotal(['2layer']) },// If any layer in the array is unlocked, it will returns true. Otherwise it will return false.
     tabFormat: [
-        ["display-text", function () { return getPointsDisplay() }]
+        ["display-text", function () { return getPointsDisplay() }],
+        ["display-text", function () { return `
+        <div style="text-align: left;">
+            电力高炉的高温使得铝可以使用.他优异的延展性、易加工性使得你可以大规模使用.<br>
+            这个阶段你的目标有三个:
+            <br>1. 升级工业高炉,制作大量HV主材料不锈钢
+            <br>2. 制作聚乙烯和多晶硅
+            <br>3. 更换发电方式
+            </ul>
+        </div>
+        ` }],
     ],
 })
 
