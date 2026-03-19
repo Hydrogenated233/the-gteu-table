@@ -142,7 +142,8 @@ var displayThings = [
 
 // You can write code here to easily display information in the top-left corner
 function displayThingsRes(){
-	return 'EUs: '+format(player.points)+' | '
+	return `EU&nbsp;&nbsp;&nbsp;: ${format(player.points)} | ${formatEU(player.points)}<br>
+	EU+/s: ${format(getPointGen())}/s | ${formatEU(getPointGen())}/s<br>`
 }
 
 // Determines when the game "ends"
