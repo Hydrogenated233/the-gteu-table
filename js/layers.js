@@ -29,20 +29,33 @@ function customPreTcik(diff){//特殊被动(不是获得重置时获得的),pass
         player.ro.points=player.ro.points
                         .add(
                             getBuyableAmount("a", 12)
-                            .sub(hasUpgrade("a", 15)?upgradeEffect('a',15):0)
+                            .sub(
+                                player.ro.points.gt(0)
+                                ?(hasUpgrade("a", 15)?upgradeEffect('a',15):0)
+                                :deciamlZero
+                            )
                             .mul(diff)
                         )
     }
-    //燃油
+    //燃油消耗
     if(player.fu.points.gte(0)){
     player.fu.points=player.fu.points
                         .add(
                             deciamlZero
                             .sub(getBuyableAmount("fu", 11))
-                            .add(hasUpgrade("a", 15)?upgradeEffect('a',15):0)
                             .mul(hasUpgrade("a", 14)?upgradeEffect("a",14):1)
                             .mul(diff)
                         )
+    }
+    if(player.ro.points.gte(0)){
+        player.fu.points=player.fu.points.add(
+            (
+                hasUpgrade("a", 15)
+                ?upgradeEffect('a',15)
+                :deciamlZero
+            )
+            .mul(diff)
+        )
     }
 }
 addLayer("stats", {
@@ -384,7 +397,9 @@ addLayer("ro", {
         "main-display",
         ["display-text", function () {//记得改customPreTick
             return formatSec(getBuyableAmount("a", 12)
-                            .sub(hasUpgrade("a", 15)?upgradeEffect('a',15):0),
+                            .sub(player.ro.points.gt(0)
+                                ?(hasUpgrade("a", 15)?upgradeEffect('a',15):0)
+                                :deciamlZero),
                             player.points.lte(buyableEffect("a",12)))
         }],
         "blank",
@@ -412,6 +427,10 @@ addLayer("ro", {
         },
     },
 })
+function formatExhaust(total,speed){
+    if(speed.lte(0))return "不会耗尽";
+    return `还有${format(total.div(speed),2)}s耗尽`
+}
 addLayer("fu", {
     layerShown() { return layerDisplayTotal(['fu']) },
     startData() {
@@ -441,16 +460,24 @@ addLayer("fu", {
         ["display-text", function () { return getPointsDisplay() }],
         "main-display",
         ["display-text", function () { return "昂贵但高效的燃料" }],
-        ["display-text", function () { return `距离耗空还有${
-            format(player.fu.points.div(//记得改customPreTick
-                getBuyableAmount("fu", 11)
-                                    .sub(hasUpgrade("a", 15)?upgradeEffect('a',15):0)
-                                    .mul(hasUpgrade("a", 14)?upgradeEffect("a",14):1)
-            ))
-        }s` }],
+        ["display-text",
+            function () { return formatExhaust(player.fu.points,//记得改customPreTick
+                                            (
+                                                (
+                                                    getBuyableAmount("fu", 11)
+                                                    .mul(hasUpgrade("a", 14)?upgradeEffect("a",14):1)
+                                                )
+                                                .sub(player.ro.points.gte(0)
+                                                ?(hasUpgrade("a", 15)
+                                                    ?upgradeEffect('a',15)
+                                                    :0)
+                                                :deciamlZero
+                                                )
+                                            )
+            )
+        }],
         "blank",
         ["microtabs", "tab"]
-        
     ],
     buyables: {
         11: {

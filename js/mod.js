@@ -41,14 +41,15 @@ function hiddenLeftTable(){
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
+	num: "0.1hotfix",
 	name: "Literally nothing",
 }
 
 function changelog(){
 	return i18n(`
 		<br><br><br><h1>更新日志:</h1><br>(不存在<span style='color: red'><s>剧透警告</s></span>)<br><br>
-		<span style="font-size: 17px;">
+			<h3>v0.1hotfix</h3><br>
+				- 修复bug<br>
 			<h3>v0.1</h3><br>
 				- 统计信息<br>
 				- 数值平衡<br>
