@@ -150,7 +150,10 @@ function displayThingsRes(){
 
 // Determines when the game "ends"
 function isEndgame() {
-	return false
+	return decimalOne.mul(hasUpgrade("a",11)?2:1)
+                            .mul(0.2)
+                            .mul(getBuyableAmount("s", 12))
+										.gte(20)
 }
 
 function getPointsDisplay(){
@@ -190,3 +193,4 @@ function maxTickLength() {
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
 }
+

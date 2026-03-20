@@ -401,6 +401,7 @@ var interval = setInterval(function() {
 	let now = Date.now()
 	let diff = (now - player.time) / 1e3
 	let trueDiff = diff
+
 	if (player.offTime !== undefined) {
 		if (player.offTime.remain > modInfo.offlineLimit * 3600) player.offTime.remain = modInfo.offlineLimit * 3600
 		if (player.offTime.remain > 0) {
@@ -427,5 +428,5 @@ var interval = setInterval(function() {
 	ticking = false
 	customPreTcik(diff)
 }, 50)
-
+ 
 setInterval(function() {needCanvasUpdate = true}, 500)

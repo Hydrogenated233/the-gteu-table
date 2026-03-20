@@ -16,7 +16,16 @@ function formatSec(basic,zeroCond){
     if(basic.lt(0))return`(${format(basic)}/s)`
     return `(+${format(basic)}/s)`
 }
+let last20Diff = [  0,0,0,0,0,
+                    0,0,0,0,0,
+                    0,0,0,0,0,
+                    0,0,0,0,0,
+                ]
 function customPreTcik(diff){//特殊被动(不是获得重置时获得的),passivegain太难写了
+    //tps
+    last20Diff = last20Diff.slice(-19).concat(diff)
+    let avgLast20Diff = last20Diff.reduce((a,b)=>a+b,0)/20
+    player.stats.tps = 1/avgLast20Diff
     //铝锭
     if(player.points.gte(buyableEffect("s",12))){
         player.a.points=player.a.points
@@ -70,6 +79,7 @@ addLayer("stats", {
         return {
             unlocked: true,
             points: new Decimal(0),// This currently does nothing, but it's required. (Might change later if you add mechanics to this layer.)
+            tps: deciamlZero
         }
     },
     color: "rgb(230, 230, 236)",
@@ -80,7 +90,8 @@ addLayer("stats", {
         ["display-text", function () { return getPointsDisplay() }],
         ["display-text", function () { return `<br>你现在有${format(player.points)}EU,也就是${formatEU(player.points)}`}],
         ["display-text", function () { return `<br>你最高有${format(player.maxPoints)}EU,也就是${formatEU(player.maxPoints)}`}],
-        ["display-text", function () { return `<br>你总共有${format(player.totalPoints)}EU,也就是${formatEU(player.totalPoints)}`}]
+        ["display-text", function () { return `<br>你总共有${format(player.totalPoints)}EU,也就是${formatEU(player.totalPoints)}`}],
+        ["display-text", function () { return `<br>TPS:${format(player.stats.tps)}`}]
     ],
     automate(){
         player.maxPoints = player.maxPoints.max(player.points)
